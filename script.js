@@ -2,11 +2,11 @@ const output = document.getElementById("output");
 const userInput = document.getElementById("userInput");
 const gameButton = document.getElementById("gameButton");
 
-let phase = "tossChoice"; // Track game phase
+let phase = "tossChoice";
 let tossChoice, computerChoice, choice;
-let isBatting, wicket, runs, runs2; 
+let isBatting, wicket, runs, runs2;
 
-// Initialize or reset game state
+// Initialize or reset game
 function initializeGame() {
     wicket = 0;
     runs = 0;
@@ -17,7 +17,7 @@ function initializeGame() {
     isBatting = false;
     phase = "tossChoice";
     output.innerHTML = "";
-    addToOutput("Welcome! Choose 1 for odd or 2 for even to proceed with the toss.");
+    addToOutput("Welcome! Enter 1 for odd or 2 for even for the toss.");
 }
 
 // Add text to the output box
@@ -28,7 +28,7 @@ function addToOutput(text) {
     output.scrollTop = output.scrollHeight;
 }
 
-// Main game handler
+// Main game logic
 function gameHandler() {
     const input = parseInt(userInput.value);
     userInput.value = "";
@@ -39,10 +39,9 @@ function gameHandler() {
                 tossChoice = input;
                 computerChoice = tossChoice === 1 ? 2 : 1;
                 phase = "toss";
-                addToOutput(`You chose ${tossChoice === 1 ? 'odd' : 'even'} for the toss.`);
-                addToOutput("Enter a toss number between 1 and 5.");
+                addToOutput("Choose a number between 1 and 5 for the toss.");
             } else {
-                addToOutput("Invalid input! Please enter 1 for odd or 2 for even.");
+                addToOutput("Invalid choice! Enter 1 for odd or 2 for even.");
             }
             break;
 
@@ -57,7 +56,7 @@ function gameHandler() {
                     addToOutput("You won the toss! Enter 1 to bat or 2 to bowl.");
                 } else {
                     phase = "batBowlChoice";
-                    addToOutput("Computer won the toss! You choose 1 to bat or 2 to bowl.");
+                    addToOutput("Computer won the toss! Enter 1 to bat or 2 to bowl.");
                 }
             } else {
                 addToOutput("Invalid toss number! Enter a number between 1 and 5.");
@@ -69,8 +68,7 @@ function gameHandler() {
                 choice = input;
                 isBatting = (choice === 1);
                 phase = "play";
-                addToOutput(`You chose to ${isBatting ? 'bat' : 'bowl'} first.`);
-                addToOutput(isBatting ? "Enter your run (0-6):" : "Enter your bowl (0-6):");
+                addToOutput(`You chose to ${isBatting ? 'bat' : 'bowl'} first. Enter a number between 0 and 6.`);
             } else {
                 addToOutput("Invalid choice! Enter 1 to bat or 2 to bowl.");
             }
@@ -81,35 +79,33 @@ function gameHandler() {
                 const computerPlay = Math.floor(Math.random() * 7);
 
                 if (isBatting) {
-                    // Player is batting
+                    // Batting phase
                     if (input === computerPlay) {
                         wicket++;
-                        addToOutput(`You lost a wicket! Wickets: ${wicket}`);
+                        addToOutput("Lost a wicket!");
                     } else {
                         runs += input;
-                        addToOutput(`Scored ${input} runs. Total runs: ${runs}`);
+                        addToOutput(`You scored ${input}. Total runs: ${runs}`);
                     }
 
                     if (wicket === 2) {
                         phase = "defend";
-                        wicket = 0;
-                        addToOutput(`You lost two wickets for ${runs} runs. Now, it's time to bowl.`);
+                        addToOutput(`All out! You scored ${runs}. Now it's time to defend.`);
                     }
                 } else {
-                    // Player is bowling
+                    // Bowling phase
                     if (input === computerPlay) {
                         wicket++;
-                        addToOutput(`Gained a wicket! Wickets: ${wicket}`);
+                        addToOutput("Gained a wicket!");
                     } else {
                         runs2 += computerPlay;
-                        addToOutput(`Computer scored ${computerPlay} runs. Total computer score: ${runs2}`);
+                        addToOutput(`Computer scored ${computerPlay}. Total: ${runs2}`);
                     }
 
                     if (wicket === 2 || runs2 >= runs) {
-                        const result = runs2 >= runs ? `Computer chased your score! You lost by ${runs2 - runs} runs.` : `You defended successfully! You won by ${runs - runs2} runs.`;
+                        const result = runs2 >= runs ? "Computer chased the score!" : "You defended the score!";
                         addToOutput(result);
                         gameButton.disabled = true;
-                        addToOutput("Game over.");
                     }
                 }
             } else {
@@ -118,23 +114,22 @@ function gameHandler() {
             break;
 
         case "defend":
-            // Second innings, player bowling, defending the score
+            // Defending phase after initial batting
             if (input >= 0 && input <= 6) {
                 const computerPlay = Math.floor(Math.random() * 7);
 
                 if (input === computerPlay) {
                     wicket++;
-                    addToOutput(`Gained a wicket! Wickets: ${wicket}`);
+                    addToOutput("Gained a wicket!");
                 } else {
                     runs2 += computerPlay;
-                    addToOutput(`Computer scored ${computerPlay} runs. Total computer score: ${runs2}`);
+                    addToOutput(`Computer scored ${computerPlay}. Total: ${runs2}`);
                 }
 
                 if (wicket === 2 || runs2 >= runs) {
-                    const result = runs2 >= runs ? `Computer chased your score! You lost by ${runs2 - runs} runs.` : `You defended the score! You won by ${runs - runs2} runs.`;
+                    const result = runs2 >= runs ? "Computer chased the score!" : "You defended the score!";
                     addToOutput(result);
                     gameButton.disabled = true;
-                    addToOutput("Game over.");
                 }
             } else {
                 addToOutput("Invalid input! Enter a number between 0 and 6.");
@@ -143,6 +138,6 @@ function gameHandler() {
     }
 }
 
-// Initialize the game when the page loads
+// Initialize game on load
 initializeGame();
-                        
+            
