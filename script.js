@@ -5,6 +5,7 @@ const gameButton = document.getElementById("gameButton");
 let phase = "tossChoice";
 let tossChoice, computerChoice, choice;
 let isBatting, wicket, runs, runs2;
+let gameOver = false;
 
 // Initialize or reset game
 function initializeGame() {
@@ -16,6 +17,7 @@ function initializeGame() {
     choice = null;
     isBatting = false;
     phase = "tossChoice";
+    gameOver = false;
     output.innerHTML = "";
     addToOutput("Welcome! Enter 1 for odd or 2 for even for the toss.");
 }
@@ -30,6 +32,8 @@ function addToOutput(text) {
 
 // Main game logic
 function gameHandler() {
+    if (gameOver) return; // Prevent further input after game is over
+
     const input = parseInt(userInput.value);
     userInput.value = "";
 
@@ -105,6 +109,7 @@ function gameHandler() {
                     if (wicket === 2 || runs2 >= runs) {
                         const result = runs2 >= runs ? "Computer chased the score!" : "You defended the score!";
                         addToOutput(result);
+                        gameOver = true;
                         gameButton.disabled = true;
                     }
                 }
@@ -118,17 +123,31 @@ function gameHandler() {
             if (input >= 0 && input <= 6) {
                 const computerPlay = Math.floor(Math.random() * 7);
 
+                // Check if the user lost a wicket
                 if (input === computerPlay) {
                     wicket++;
-                    addToOutput("Gained a wicket!");
+                    addToOutput("Lost a wicket!");
                 } else {
-                    runs2 += computerPlay;
-                    addToOutput(`Computer scored ${computerPlay}. Total: ${runs2}`);
+                    runs += input;  // Add runs for the user
+                    addToOutput(`You scored ${input}. Total runs: ${runs}`);
                 }
 
-                if (wicket === 2 || runs2 >= runs) {
-                    const result = runs2 >= runs ? "Computer chased the score!" : "You defended the score!";
-                    addToOutput(result);
+                // Check if user lost two wickets or can't defend
+                if (wicket === 2) {
+                    addToOutput(`You lost two wickets and lost by ${runs2 - runs} runs.`);
+                    gameOver = true;
+                    gameButton.disabled = true;
+                }
+
+                if (runs2 === runs) {
+                    addToOutput("You tied the game!");
+                    gameOver = true;
+                    gameButton.disabled = true;
+                }
+
+                if (runs2 > runs) {
+                    addToOutput(`You lost the game by ${runs2 - runs} runs.`);
+                    gameOver = true;
                     gameButton.disabled = true;
                 }
             } else {
@@ -140,4 +159,4 @@ function gameHandler() {
 
 // Initialize game on load
 initializeGame();
-            
+                                                        
