@@ -6,6 +6,7 @@ let phase = "tossChoice";
 let tossChoice, computerChoice, choice;
 let isBatting, wicket, runs, runs2;
 let gameOver = false;
+let i = 1;  // keep track of ongoing phase
 
 // Initialize or reset game
 function initializeGame() {
@@ -159,4 +160,3 @@ function gameHandler() {
 
 // Initialize game on load
 initializeGame();
-                                                        
