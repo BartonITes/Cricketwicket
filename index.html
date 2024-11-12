@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odd or Even Cricket Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Odd or Even Cricket Game</h1>
+        <div class="instructions">
+            <p>Choose numbers 1 to 5 for the toss and 0 to 6 during gameplay.</p>
+            <p>If the same number is chosen by both you and the computer, the batting side loses a wicket.</p>
+            <p>Game ends after losing two wickets.</p>
+        </div>
+        <div class="game-output" id="output">
+            <p>Welcome to the game! Please follow the instructions.</p>
+        </div>
+        <div class="input-section">
+            <input type="number" id="userInput" placeholder="Enter choice" min="0" max="6">
+            <button id="gameButton" onclick="gameHandler()">Start Game</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
