@@ -61,12 +61,20 @@ function gameHandler() {
                     phase = "batBowlChoice";
                     addToOutput("You won the toss! Enter 1 to bat or 2 to bowl.");
                 } else {
-                    phase = "batBowlChoice";
-                    addToOutput("Computer won the toss! Enter 1 to bat or 2 to bowl.");
+                    phase = "computerBatBowlChoice";
+                    addToOutput("Computer won the toss! The computer will decide to bat or bowl.");
                 }
             } else {
                 addToOutput("Invalid toss number! Enter a number between 1 and 5.");
             }
+            break;
+
+        case "computerBatBowlChoice":
+            // Computer randomly chooses whether to bat or bowl
+            choice = Math.random() < 0.5 ? 1 : 2;
+            isBatting = (choice === 1);
+            phase = "play";
+            addToOutput(`Computer chose to ${isBatting ? 'bat' : 'bowl'} first. Enter a number between 0 and 6.`);
             break;
 
         case "batBowlChoice":
